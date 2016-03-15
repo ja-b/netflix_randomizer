@@ -1,6 +1,10 @@
 import random
 from selenium import webdriver
 
+genres = {'comedy': 6548,
+          'comedy-tv': 10375,
+          'action': 1365}
+
 def login(driver):
     driver.get("http://www.netflix.com/Login")
     driver.find_element_by_id('email').send_keys("")
@@ -16,9 +20,12 @@ def set_drm_plugin_on(driver):
     driver.find_element_by_id("oimompecagnajdejgnnjijobebaeigek").click()
     import time; time.sleep(10)
 
-def go_to_browse(driver):
+def go_to_browse(driver, genre=None):
 
-    driver.get("http://www.netflix.com/Browse")
+    if genre is not None:
+        driver.get("https://www.netflix.com/browse/genre/{}".format(genres[genre]))
+    else:
+        driver.get("http://www.netflix.com/Browse")
 
 def select_random_from_screen(driver):
 
@@ -45,6 +52,6 @@ if __name__ == "__main__":
     set_drm_plugin_on(driver=driver)
     login(driver=driver)
     while True:
-        go_to_browse(driver=driver)
+        go_to_browse(driver=driver, genre='comedy')
         select_random_from_screen(driver=driver)
         import time; time.sleep(60 * 1)
